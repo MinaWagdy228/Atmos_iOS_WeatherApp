@@ -15,7 +15,6 @@ import SwiftUI
 final class CurrentWeatherViewModel {
 
     // MARK: - Dependencies
-    // The ViewModel only knows about the Use Case interface, keeping it entirely decoupled from networking logic.
     private let fetchWeatherUseCase: FetchWeatherUseCase
 
     // MARK: - State Properties
@@ -33,24 +32,19 @@ final class CurrentWeatherViewModel {
     }
 
     // MARK: - Intentions (Business Logic)
-
     func loadWeather(for city: String) async {
         isLoading = true
         errorMessage = nil
 
         do {
-            // Execute the use case
             let fetchedWeather = try await fetchWeatherUseCase.execute(
                 for: city)
 
-            // Update the state (this automatically triggers a UI refresh)
             self.weather = fetchedWeather
 
-            // Update the time of day theme based on the current time
             self.timeOfDay = TimeOfDay.current
 
         } catch {
-            // In a production app, you would map this to a user-friendly domain error message
             self.errorMessage =
                 "Failed to fetch weather for \(city). Please try again."
             print("Weather Fetch Error: \(error.localizedDescription)")
@@ -60,8 +54,6 @@ final class CurrentWeatherViewModel {
     }
 
     // MARK: - Formatted Display Values
-    // These remain unchanged from your original setup; they cleanly format raw data for the Views.
-
     var cityName: String { weather.cityName }
     var temperature: String { "\(Int(weather.temperature))°" }
     var condition: String { weather.condition }
