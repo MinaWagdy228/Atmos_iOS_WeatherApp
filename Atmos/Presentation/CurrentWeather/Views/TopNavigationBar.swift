@@ -12,7 +12,7 @@ import SwiftUI
 /// Pass the correct `theme` and action closures for each screen's needs.
 struct TopNavigationBar: View {
 
-    let theme:     AppTheme
+    @Environment(\.appTheme) private var theme
     let onMenuTap: () -> Void
 
     var body: some View {
@@ -54,7 +54,7 @@ struct TopNavigationBar: View {
 #Preview {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
-        TopNavigationBar(theme: AppTheme(timeOfDay: .day)) {}
+        TopNavigationBar() {}
     }
 }
 

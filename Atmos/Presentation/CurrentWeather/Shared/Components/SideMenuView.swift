@@ -8,7 +8,7 @@ import SwiftUI
 
 struct SideMenuView: View {
 
-    let theme:   AppTheme
+    @Environment(\.appTheme) private var theme
     let onClose: () -> Void
 
     var body: some View {
@@ -78,11 +78,11 @@ struct SideMenuView: View {
 }
 
 #Preview("Day") {
-    SideMenuView(theme: AppTheme(timeOfDay: .day), onClose: {})
+    SideMenuView(onClose: {})
         .frame(width: 130)
 }
 
 #Preview("Night") {
-    SideMenuView(theme: AppTheme(timeOfDay: .night), onClose: {})
+    SideMenuView(onClose: {})
         .frame(width: 130)
 }

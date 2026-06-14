@@ -13,7 +13,7 @@ import SwiftUI
 struct ForecastSectionView: View {
 
     let viewModel: CurrentWeatherViewModel
-    let theme:     AppTheme
+    @Environment(\.appTheme) private var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -37,8 +37,7 @@ struct ForecastSectionView: View {
                 } label: {
                     ForecastRowView(
                         day: day,
-                        iconName: viewModel.systemIconName(for: day.conditionCode),
-                        theme: theme
+                        iconName: viewModel.systemIconName(for: day.conditionCode)
                     )
                 }
                 .buttonStyle(.plain)
@@ -82,8 +81,7 @@ struct ForecastSectionView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         ForecastSectionView(
-            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
-            theme: AppTheme(timeOfDay: .day)
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel()
         )
         .padding()
     }

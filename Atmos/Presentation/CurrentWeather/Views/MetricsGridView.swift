@@ -13,8 +13,7 @@ import SwiftUI
 struct MetricsGridView: View {
 
     let viewModel: CurrentWeatherViewModel
-    let theme:     AppTheme
-
+    @Environment(\.appTheme) private var theme
     private let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
@@ -27,32 +26,28 @@ struct MetricsGridView: View {
                 icon:  "eye",
                 label: "VISIBILITY",
                 value: viewModel.visibility,
-                unit:  "km",
-                theme: theme
+                unit:  "km"
             )
 
             MetricCardView(
                 icon:  "drop.fill",
                 label: "HUMIDITY",
                 value: viewModel.humidity,
-                unit:  "%",
-                theme: theme
+                unit:  "%"
             )
 
             MetricCardView(
                 icon:  "thermometer.medium",
                 label: "FEELS LIKE",
                 value: viewModel.feelsLike,
-                unit:  "°",
-                theme: theme
+                unit:  "°"
             )
 
             MetricCardView(
                 icon:  "gauge.medium",
                 label: "PRESSURE",
                 value: viewModel.pressure,
-                unit:  "",
-                theme: theme
+                unit:  ""
             )
         }
     }
@@ -64,9 +59,7 @@ struct MetricsGridView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         MetricsGridView(
-            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
-            theme: AppTheme(timeOfDay: .day)
-        )
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel())
         .padding()
     }
 }
