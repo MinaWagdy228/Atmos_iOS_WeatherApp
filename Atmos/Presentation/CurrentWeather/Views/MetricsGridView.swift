@@ -64,7 +64,7 @@ struct MetricsGridView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         MetricsGridView(
-            viewModel: CurrentWeatherViewModel(),
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
             theme: AppTheme(timeOfDay: .day)
         )
         .padding()
