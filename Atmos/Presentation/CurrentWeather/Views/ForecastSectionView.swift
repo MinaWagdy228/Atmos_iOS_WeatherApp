@@ -82,7 +82,7 @@ struct ForecastSectionView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         ForecastSectionView(
-            viewModel: CurrentWeatherViewModel(),
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
             theme: AppTheme(timeOfDay: .day)
         )
         .padding()

@@ -40,8 +40,6 @@ struct WeatherHeaderView: View {
                 .padding(.top, 2)
 
             // Condition Icon
-            // Replace systemName with your asset image name when assets are ready.
-            // Apply .resizable() + .frame() for custom asset sizing.
             Image(systemName: viewModel.systemIconName(for: viewModel.weather.conditionCode))
                 .symbolRenderingMode(.multicolor)
                 .font(.system(size: 72))
@@ -59,7 +57,7 @@ struct WeatherHeaderView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         WeatherHeaderView(
-            viewModel: CurrentWeatherViewModel(),
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
             theme: AppTheme(timeOfDay: .day)
         )
     }
