@@ -13,8 +13,7 @@ import SwiftUI
 struct WeatherHeaderView: View {
 
     let viewModel: CurrentWeatherViewModel
-    let theme:     AppTheme
-
+    @Environment(\.appTheme) private var theme
     var body: some View {
         VStack(spacing: 2) {
 
@@ -57,8 +56,7 @@ struct WeatherHeaderView: View {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
         WeatherHeaderView(
-            viewModel: DIContainer.shared.makeCurrentWeatherViewModel(),
-            theme: AppTheme(timeOfDay: .day)
+            viewModel: DIContainer.shared.makeCurrentWeatherViewModel()
         )
     }
 }

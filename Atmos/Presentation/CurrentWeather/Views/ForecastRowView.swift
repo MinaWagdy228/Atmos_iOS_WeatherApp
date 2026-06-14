@@ -14,8 +14,8 @@ struct ForecastRowView: View {
 
     let day:      ForecastDayModel
     let iconName: String
-    let theme:    AppTheme
-
+    @Environment(\.appTheme) private var theme
+    
     var body: some View {
         HStack(spacing: 8) {
 
@@ -62,9 +62,7 @@ struct ForecastRowView: View {
         AppTheme(timeOfDay: .night).backgroundGradient.ignoresSafeArea()
         ForecastRowView(
             day: ForecastDayModel.dummyForecast[0],
-            iconName: "cloud.sun.fill",
-            theme: AppTheme(timeOfDay: .night)
-        )
+            iconName: "cloud.sun.fill")
         .padding()
     }
 }

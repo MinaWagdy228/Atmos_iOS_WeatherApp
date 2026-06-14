@@ -16,8 +16,8 @@ struct MetricCardView: View {
     let label: String   // Uppercase caption e.g. "VISIBILITY"
     let value: String   // Numeric string e.g. "10"
     let unit:  String   // Unit string e.g. "km", "%" — pass "" to hide
-    let theme: AppTheme
-
+    @Environment(\.appTheme) private var theme
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
@@ -63,11 +63,9 @@ struct MetricCardView: View {
         AppTheme(timeOfDay: .night).backgroundGradient.ignoresSafeArea()
         HStack(spacing: 12) {
             MetricCardView(icon: "eye", label: "VISIBILITY",
-                           value: "10", unit: "km",
-                           theme: AppTheme(timeOfDay: .night))
+                           value: "10", unit: "km")
             MetricCardView(icon: "drop.fill", label: "HUMIDITY",
-                           value: "36", unit: "%",
-                           theme: AppTheme(timeOfDay: .night))
+                           value: "36", unit: "%")
         }
         .padding()
     }

@@ -23,7 +23,7 @@ struct CurrentWeatherView: View {
                         .ignoresSafeArea()
 
                     VStack(spacing: 0) {
-                        TopNavigationBar(theme: theme) {
+                        TopNavigationBar() {
                             withAnimation(.easeInOut(duration: 0.28)) {
                                 viewModel.isMenuOpen = true
                             }
@@ -36,15 +36,15 @@ struct CurrentWeatherView: View {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 20) {
                                 WeatherHeaderView(
-                                    viewModel: viewModel, theme: theme
+                                    viewModel: viewModel
                                 )
                                 .padding(.top, 8)
 
                                 ForecastSectionView(
-                                    viewModel: viewModel, theme: theme)
+                                    viewModel: viewModel)
 
                                 MetricsGridView(
-                                    viewModel: viewModel, theme: theme)
+                                    viewModel: viewModel)
                             }
                             .padding(.horizontal, 16)
                             .padding(.bottom, 36)
@@ -111,7 +111,7 @@ struct CurrentWeatherView: View {
             GeometryReader { geo in
                 let drawerWidth = geo.size.width / 1.5
 
-                SideMenuView(theme: theme) {
+                SideMenuView() {
                     withAnimation(.easeInOut(duration: 0.28)) {
                         viewModel.isMenuOpen = false
                     }
@@ -121,6 +121,7 @@ struct CurrentWeatherView: View {
             }
         }
         .animation(.easeInOut(duration: 0.28), value: viewModel.isMenuOpen)
+        .environment(\.appTheme, theme)
     }
 }
 #Preview {
