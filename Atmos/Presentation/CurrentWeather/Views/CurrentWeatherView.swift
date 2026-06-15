@@ -27,6 +27,7 @@ struct CurrentWeatherView: View {
                         TopNavigationBar(
                             onMenuTap: {
                                 withAnimation(.easeInOut(duration: 0.28)) {
+                                    viewModel.loadSavedCities()
                                     viewModel.isMenuOpen = true
                                 }
                             },
@@ -77,7 +78,7 @@ struct CurrentWeatherView: View {
                 }
                 .toolbar(.hidden, for: .navigationBar)
                 .task {
-                    await viewModel.loadWeather(for: "Alexandria")
+                    await viewModel.loadWeather(for: viewModel.defaultLocation)
                 }
             }
 
@@ -97,6 +98,7 @@ struct CurrentWeatherView: View {
                 let drawerWidth = geo.size.width / 1.5
 
                 SideMenuView(
+                    savedCities: viewModel.savedCities,
                     onClose: {
                         withAnimation(.easeInOut(duration: 0.28)) {
                             viewModel.isMenuOpen = false
@@ -111,13 +113,24 @@ struct CurrentWeatherView: View {
                                 viewModel.isSearching = true
                             }
                         }
+                    },
+                    onCityTap: { cityName in
+                        Task {
+                            await viewModel.selectCityFromDrawer(name: cityName)
+                        }
+                    },
+                    onDelete: { cityName in
+                        viewModel.deleteSavedCity(name: cityName)
+                    },
+                    onCurrentLocationTap: {
+                        Task {
+                            await viewModel.selectCurrentLocationFromDrawer()
+                        }
                     }
                 )
                 .frame(width: drawerWidth)
                 .offset(x: viewModel.isMenuOpen ? 0 : -drawerWidth)
             }
-            .animation(.easeInOut(duration: 0.28), value: viewModel.isMenuOpen)
-
             // ── Search Overlay ─────────────────────────────────────────
             if viewModel.isSearching {
                 SearchView(

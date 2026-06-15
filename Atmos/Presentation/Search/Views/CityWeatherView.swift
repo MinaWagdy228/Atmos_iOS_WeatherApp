@@ -31,17 +31,23 @@ struct CityWeatherView: View {
                         .frame(width: 44, height: 44)
 
                         Spacer()
+
                         Text(viewModel.cityName)
                             .font(AppFonts.navTitle)
                             .foregroundStyle(theme.primaryText)
+
                         Spacer()
 
+                        // ── The Dynamic Save Button ──────────────────────────
                         Button {
-                            // Phase 2: persist city
+                            viewModel.toggleSaveStatus()
                         } label: {
-                            Image(systemName: "plus")
+                            Image(systemName: viewModel.isSaved ? "checkmark.circle.fill" : "plus")
+                                // A subtle color change provides excellent UX feedback
+                                .foregroundStyle(viewModel.isSaved ? Color.green : theme.primaryText)
                                 .font(.system(size: 20, weight: .medium))
-                                .foregroundStyle(theme.primaryText)
+                                // Adds a smooth transition when the icon swaps
+                                .contentTransition(.symbolEffect(.replace))
                         }
                         .frame(width: 44, height: 44)
                     }
