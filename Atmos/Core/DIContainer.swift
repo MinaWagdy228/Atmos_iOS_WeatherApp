@@ -30,6 +30,6 @@ final class DIContainer {
     }()
     // MARK: - ViewModels (Factories)
     func makeCurrentWeatherViewModel() -> CurrentWeatherViewModel {
-            return CurrentWeatherViewModel(fetchWeatherUseCase: fetchWeatherUseCase)
-        }
+        return CurrentWeatherViewModel(fetchWeatherUseCase: fetchWeatherUseCase)
+    }
 }

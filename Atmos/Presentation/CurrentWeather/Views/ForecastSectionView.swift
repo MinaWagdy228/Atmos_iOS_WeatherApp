@@ -7,9 +7,6 @@
 import SwiftUI
 
 // MARK: - Forecast Section View
-
-/// Glassmorphic card containing the 3-day forecast header and rows.
-/// Each row is a `NavigationLink` so tapping navigates to the hourly view (Phase 2).
 struct ForecastSectionView: View {
 
     let viewModel: CurrentWeatherViewModel
@@ -31,13 +28,12 @@ struct ForecastSectionView: View {
             // ── Forecast Rows ───────────────────────────────────────
             ForEach(viewModel.forecast) { day in
                 NavigationLink {
-                    // HourlyForecastView(day: day)  ← wire up in Phase 2
-                    Text("Hourly view coming soon")
-                        .foregroundStyle(.white)
+                    HourlyForecastView(day: day)
                 } label: {
                     ForecastRowView(
                         day: day,
-                        iconName: viewModel.systemIconName(for: day.conditionCode)
+                        iconName: viewModel.systemIconName(
+                            for: day.conditionCode)
                     )
                 }
                 .buttonStyle(.plain)
@@ -86,4 +82,3 @@ struct ForecastSectionView: View {
         .padding()
     }
 }
-
