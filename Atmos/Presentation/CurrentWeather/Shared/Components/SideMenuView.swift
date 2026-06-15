@@ -9,18 +9,14 @@ import SwiftUI
 struct SideMenuView: View {
 
     @Environment(\.appTheme) private var theme
-    let onClose: () -> Void
+    let onClose:     () -> Void
+    let onSearchTap: () -> Void
 
     var body: some View {
         ZStack(alignment: .topLeading) {
+            theme.backgroundGradient.ignoresSafeArea()
 
-            // ── Background ─────────────────────────────────────────────
-            theme.backgroundGradient
-                .ignoresSafeArea()
-
-            // ── Content ────────────────────────────────────────────────
             VStack(alignment: .leading, spacing: 0) {
-
                 Text("Atmos")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundStyle(theme.primaryText)
@@ -47,10 +43,7 @@ struct SideMenuView: View {
                 Spacer()
 
                 // ── Add City Button ──────────────────────────────────
-                Button {
-                    onClose()
-                    // Phase 2: navigate to SearchView
-                } label: {
+                Button(action: onSearchTap) { 
                     VStack(spacing: 6) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 22, weight: .semibold))
@@ -78,11 +71,11 @@ struct SideMenuView: View {
 }
 
 #Preview("Day") {
-    SideMenuView(onClose: {})
+    SideMenuView(onClose: {}, onSearchTap: {})
         .frame(width: 130)
 }
 
 #Preview("Night") {
-    SideMenuView(onClose: {})
+    SideMenuView(onClose: {}, onSearchTap: {})
         .frame(width: 130)
 }
