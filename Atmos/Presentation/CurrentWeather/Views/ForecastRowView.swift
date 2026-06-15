@@ -7,15 +7,12 @@
 import SwiftUI
 
 // MARK: - Forecast Row View
-
-/// A single row in the 3-day forecast card.
-/// Shows the day label, a multicolor condition icon, and the low–high temp range.
 struct ForecastRowView: View {
 
-    let day:      ForecastDayModel
+    let day: ForecastDayModel
     let iconName: String
     @Environment(\.appTheme) private var theme
-    
+
     var body: some View {
         HStack(spacing: 8) {
 
@@ -23,27 +20,23 @@ struct ForecastRowView: View {
             Text(day.dayName)
                 .font(AppFonts.forecastDay)
                 .foregroundStyle(theme.primaryText)
-                .frame(width: 56, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            Spacer()
-
-            // Condition Icon
-            // When asset icons are ready, swap Image(systemName:) for Image(iconName)
-            // and remove symbolRenderingMode. Keep the frame to preserve layout.
             Image(systemName: iconName)
                 .symbolRenderingMode(.multicolor)
                 .font(.system(size: 24))
                 .frame(width: 30, alignment: .center)
 
-            Spacer()
-
             // Temperature Range
             Text("\(formatted(day.lowTemp))°  –  \(formatted(day.highTemp))°")
                 .font(AppFonts.forecastTemp)
                 .foregroundStyle(theme.primaryText)
+                .monospacedDigit()
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
+
     }
 
     // MARK: Private
@@ -62,8 +55,8 @@ struct ForecastRowView: View {
         AppTheme(timeOfDay: .night).backgroundGradient.ignoresSafeArea()
         ForecastRowView(
             day: ForecastDayModel.dummyForecast[0],
-            iconName: "cloud.sun.fill")
+            iconName: "cloud.sun.fill"
+        )
         .padding()
     }
 }
-

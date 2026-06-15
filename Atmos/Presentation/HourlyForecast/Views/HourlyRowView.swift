@@ -18,8 +18,7 @@ struct HourlyRowView: View {
             Text(hour.time)
                 .font(AppFonts.forecastDay)
                 .foregroundStyle(theme.primaryText)
-                .frame(width: 56, alignment: .leading)
-
+                .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
 
             // Icon
@@ -34,7 +33,8 @@ struct HourlyRowView: View {
             Text("\(Int(hour.temperature))°")
                 .font(AppFonts.forecastDay)
                 .foregroundStyle(theme.primaryText)
-                .frame(width: 48, alignment: .trailing)
+                .monospacedDigit()
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 18)
