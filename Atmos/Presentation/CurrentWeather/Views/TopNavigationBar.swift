@@ -6,18 +6,14 @@
 //
 import SwiftUI
 
-// MARK: - Top Navigation Bar
-
-/// Reusable custom nav bar used across all screens.
-/// Pass the correct `theme` and action closures for each screen's needs.
 struct TopNavigationBar: View {
 
     @Environment(\.appTheme) private var theme
-    let onMenuTap: () -> Void
+    let onMenuTap:   () -> Void
+    let onSearchTap: () -> Void
 
     var body: some View {
         HStack {
-            // ── Hamburger / Menu ──────────────────────────────────────
             Button(action: onMenuTap) {
                 Image(systemName: "line.3.horizontal")
                     .font(.system(size: 20, weight: .medium))
@@ -27,17 +23,13 @@ struct TopNavigationBar: View {
 
             Spacer()
 
-            // ── App Name ──────────────────────────────────────────────
             Text("Atmos")
                 .font(AppFonts.navTitle)
                 .foregroundStyle(theme.primaryText)
 
             Spacer()
 
-            // ── Search ────────────────────────────────────────────────
-            Button(action: {
-                // Phase 2: Navigate to SearchView
-            }) {
+            Button(action: onSearchTap) {
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 20, weight: .medium))
                     .foregroundStyle(theme.primaryText)
@@ -49,12 +41,9 @@ struct TopNavigationBar: View {
     }
 }
 
-// MARK: - Preview
-
 #Preview {
     ZStack {
         AppTheme(timeOfDay: .day).backgroundGradient.ignoresSafeArea()
-        TopNavigationBar() {}
+        TopNavigationBar(onMenuTap: {}, onSearchTap: {})
     }
 }
-
