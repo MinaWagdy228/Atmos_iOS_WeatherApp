@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private struct AppThemeKey: EnvironmentKey {
+private struct AppThemeKey: EnvironmentKey {  // safe fall back,If a deeply nested view attempts to read the theme before you have explicitly injected it at the top level
     static let defaultValue: AppTheme = AppTheme(timeOfDay: .day)
 }
 

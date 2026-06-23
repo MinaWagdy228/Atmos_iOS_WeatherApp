@@ -14,7 +14,7 @@ final class CurrentWeatherViewModel {
 
     // MARK: - Dependencies
     private let fetchWeatherUseCase: FetchWeatherUseCase
-    private let localRepository: LocalWeatherRepository
+    private let managedSavedCitiesUseCase: ManageSavedCitiesUseCase
 
     // MARK: - State
     var weather: WeatherModel = .dummy
@@ -33,10 +33,10 @@ final class CurrentWeatherViewModel {
     // MARK: - Init
     init(
         fetchWeatherUseCase: FetchWeatherUseCase,
-        localRepository: LocalWeatherRepository
+        managedSavedCitiesUseCase: ManageSavedCitiesUseCase
     ) {
         self.fetchWeatherUseCase = fetchWeatherUseCase
-        self.localRepository = localRepository
+        self.managedSavedCitiesUseCase = managedSavedCitiesUseCase
         loadSavedCities()
     }
 
@@ -64,7 +64,7 @@ final class CurrentWeatherViewModel {
     func checkIfSaved() {
         Task {
             do {
-                self.isSaved = try await localRepository.isCitySaved(
+                self.isSaved = try await managedSavedCitiesUseCase.isCitySaved(
                     name: weather.cityName)
             } catch {
                 print("Failed to check saved status: \(error)")
@@ -76,10 +76,10 @@ final class CurrentWeatherViewModel {
         Task {
             do {
                 if isSaved {
-                    try await localRepository.deleteCity(name: weather.cityName)
+                    try await managedSavedCitiesUseCase.deleteCity(name: weather.cityName)
                     self.isSaved = false
                 } else {
-                    try await localRepository.saveCity(
+                    try await managedSavedCitiesUseCase.saveCity(
                         name: weather.cityName, temperature: weather.temperature
                     )
                     self.isSaved = true
@@ -95,7 +95,7 @@ final class CurrentWeatherViewModel {
     func loadSavedCities() {
         Task {
             do {
-                self.savedCities = try await localRepository.getSavedCities()
+                self.savedCities = try await managedSavedCitiesUseCase.getSavedCities()
             } catch {
                 print("Failed to load saved cities: \(error)")
             }
@@ -105,7 +105,7 @@ final class CurrentWeatherViewModel {
     func deleteSavedCity(name: String) {
         Task {
             do {
-                try await localRepository.deleteCity(name: name)
+                try await managedSavedCitiesUseCase.deleteCity(name: name)
 
                 if self.weather.cityName == name {
                     self.isSaved = false
