@@ -18,58 +18,61 @@ import SwiftData
 /// Marked as @MainActor because it interacts with UI-bound ViewModels and the SwiftData main context.
 @MainActor
 final class DIContainer {
-    
+
     // MARK: - Singleton
     static let shared = DIContainer()
-    
+
     private init() {}
-    
+
     // MARK: - SwiftData Infrastructure
     lazy var modelContainer: ModelContainer = {
         do {
             // Initializes the local database for the SavedCityEntity
             return try ModelContainer(for: SavedCityEntity.self)
         } catch {
-            fatalError("Could not initialize SwiftData ModelContainer: \(error)")
+            fatalError(
+                "Could not initialize SwiftData ModelContainer: \(error)")
         }
     }()
-    
+
     // MARK: - Core Infrastructure
     // Assuming you have a base network manager from Phase 1
     lazy var networkManager: NetworkManager = {
         return NetworkManagerImpl()
     }()
-    
+
     // MARK: - Data Sources
     lazy var remoteWeatherDataSource: RemoteWeatherDataSource = {
         return RemoteWeatherDataSourceImpl(networkManager: networkManager)
     }()
-    
+
     lazy var localWeatherDataSource: LocalWeatherDataSource = {
         // Injects the main thread context into the local data source
         return LocalWeatherDataSourceImpl(context: modelContainer.mainContext)
     }()
-    
+
     // MARK: - Repositories
     lazy var weatherRepository: WeatherRepository = {
         return WeatherRepositoryImpl(remoteDataSource: remoteWeatherDataSource)
     }()
-    
+
     lazy var localWeatherRepository: LocalWeatherRepository = {
-        return LocalWeatherRepositoryImpl(localDataSource: localWeatherDataSource)
+        return LocalWeatherRepositoryImpl(
+            localDataSource: localWeatherDataSource)
     }()
-    
+
     // MARK: - Use Cases
     lazy var fetchWeatherUseCase: FetchWeatherUseCase = {
         return FetchWeatherUseCaseImpl(repository: weatherRepository)
     }()
-    
+    lazy var manageSavedCitiesUseCase: ManageSavedCitiesUseCase = {
+        return ManageSavedCitiesUseCaseImpl(repository: localWeatherRepository)
+    }()
     // MARK: - ViewModels (Factories)
-    /// Creates a fresh instance of the ViewModel, injecting both remote and local dependencies.
     func makeCurrentWeatherViewModel() -> CurrentWeatherViewModel {
         return CurrentWeatherViewModel(
             fetchWeatherUseCase: fetchWeatherUseCase,
-            localRepository: localWeatherRepository
+            managedSavedCitiesUseCase: manageSavedCitiesUseCase
         )
     }
 }
