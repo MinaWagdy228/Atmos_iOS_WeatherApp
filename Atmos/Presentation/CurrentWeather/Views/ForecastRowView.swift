@@ -28,23 +28,17 @@ struct ForecastRowView: View {
                 .frame(width: 30, alignment: .center)
 
             // Temperature Range
-            Text("\(formatted(day.lowTemp))°  –  \(formatted(day.highTemp))°")
-                .font(AppFonts.forecastTemp)
-                .foregroundStyle(theme.primaryText)
-                .monospacedDigit()
-                .frame(maxWidth: .infinity, alignment: .trailing)
+            Text(
+                "\(day.lowTemp.formattedTemp)°  –  \(day.highTemp.formattedTemp)°"
+            )
+            .font(AppFonts.forecastTemp)
+            .foregroundStyle(theme.primaryText)
+            .monospacedDigit()
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
 
-    }
-
-    // MARK: Private
-
-    private func formatted(_ value: Double) -> String {
-        value.truncatingRemainder(dividingBy: 1) == 0
-            ? "\(Int(value))"
-            : String(format: "%.1f", value)
     }
 }
 

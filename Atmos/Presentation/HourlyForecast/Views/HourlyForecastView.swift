@@ -52,8 +52,8 @@ struct HourlyForecastView: View {
                         ForEach(viewModel.hours) { hour in
                             HourlyRowView(
                                 hour: hour,
-                                iconName: viewModel.systemIconName(
-                                    for: hour.conditionCode)
+                                iconName: WeatherIconMapper
+                                    .systemIconName(for: hour.conditionCode)
                             )
 
                             if hour.id != viewModel.hours.last?.id {

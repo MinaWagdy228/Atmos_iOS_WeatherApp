@@ -18,7 +18,8 @@ final class CurrentWeatherViewModel {
 
     // MARK: - State
     var weather: WeatherModel = .dummy
-    var timeOfDay: TimeOfDay = .current
+    var timeOfDay: TimeOfDay = .day
+//    var timeOfDay: TimeOfDay = .current
     var isMenuOpen: Bool = false
     var isSearching: Bool = false
 
@@ -47,8 +48,8 @@ final class CurrentWeatherViewModel {
 
         do {
             weather = try await fetchWeatherUseCase.execute(for: city)
-            timeOfDay = .current
-
+            //timeOfDay = .current
+            timeOfDay = weather.isDay == 1 ? .day : .night
             checkIfSaved()
 
         } catch {
@@ -152,7 +153,7 @@ final class CurrentWeatherViewModel {
     var temperature: String { "\(Int(weather.temperature))°" }
     var condition: String { weather.condition }
     var highLow: String {
-        "H:\(formatted(weather.highTemp))°  L:\(formatted(weather.lowTemp))°"
+        "H:\(weather.highTemp.formattedTemp)°  L:\(weather.lowTemp.formattedTemp)°"
     }
     var visibility: String { "\(Int(weather.visibility))" }
     var humidity: String { "\(weather.humidity)" }
@@ -160,26 +161,4 @@ final class CurrentWeatherViewModel {
     var pressure: String { "\(Int(weather.pressure))" }
     var forecast: [ForecastDayModel] { weather.forecast }
 
-    // MARK: - SF Symbol Resolution
-    func systemIconName(for code: Int) -> String {
-        switch code {
-        case 1000: return "sun.max.fill"
-        case 1003: return "cloud.sun.fill"
-        case 1006: return "cloud.fill"
-        case 1009: return "smoke.fill"
-        case 1030: return "cloud.fog.fill"
-        case 1063, 1150...1189: return "cloud.rain.fill"
-        case 1066, 1210...1225: return "cloud.snow.fill"
-        case 1114: return "wind.snow"
-        case 1087, 1273...1282: return "cloud.bolt.rain.fill"
-        default: return "cloud.sun.fill"
-        }
-    }
-
-    // MARK: - Private
-    private func formatted(_ v: Double) -> String {
-        v.truncatingRemainder(dividingBy: 1) == 0
-            ? "\(Int(v))"
-            : String(format: "%.1f", v)
-    }
 }

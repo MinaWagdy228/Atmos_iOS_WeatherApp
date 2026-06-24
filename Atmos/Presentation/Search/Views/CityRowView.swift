@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CityRowView: View {
 
-    let city:  WeatherModel
+    let city: WeatherModel
     @Environment(\.appTheme) private var theme
     let iconName: String
 
@@ -19,19 +19,18 @@ struct CityRowView: View {
                 Text(city.cityName)
                     .font(AppFonts.forecastDay)
                     .foregroundStyle(theme.primaryText)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            Image(systemName: iconName)
+                .symbolRenderingMode(.multicolor)
+                .font(.system(size: 22))
+                .frame(width: 30, alignment: .center)
 
-            Spacer()
-
-            HStack(spacing: 8) {
-                Image(systemName: iconName)
-                    .symbolRenderingMode(.multicolor)
-                    .font(.system(size: 22))
-
-                Text("\(Int(city.temperature))°")
-                    .font(AppFonts.conditionText)
-                    .foregroundStyle(theme.primaryText)
-            }
+            Text("\(Int(city.temperature))°")
+                .font(AppFonts.conditionText)
+                .foregroundStyle(theme.primaryText)
+                .monospacedDigit()
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)

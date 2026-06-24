@@ -23,6 +23,7 @@ struct CurrentDTO: Decodable {
     let humidity: Int
     let feelslikeC: Double
     let pressureMb: Double
+    let isDay : Int
     enum CodingKeys: String, CodingKey {
         case tempC = "temp_c"
         case condition
@@ -30,6 +31,7 @@ struct CurrentDTO: Decodable {
         case humidity
         case feelslikeC = "feelslike_c"
         case pressureMb = "pressure_mb"
+        case isDay = "is_day"
     }
 
 }
