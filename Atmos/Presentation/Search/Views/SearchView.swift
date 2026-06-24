@@ -63,8 +63,9 @@ struct SearchView: View {
 
                             CityRowView(
                                 city: city,
-                                iconName: viewModel.systemIconName(
-                                    for: city.conditionCode)
+                                iconName: WeatherIconMapper
+                                
+                                    .systemIconName(for: city.conditionCode)
                             )
                             .contentShape(Rectangle())
                             .onTapGesture { onCitySelected(city) }

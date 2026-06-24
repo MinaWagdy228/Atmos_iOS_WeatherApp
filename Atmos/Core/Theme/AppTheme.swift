@@ -12,10 +12,10 @@ enum TimeOfDay {
     case day  // 5:00 AM – 6:00 PM
     case night  // 6:00 PM – 5:00 AM
 
-    static var current: TimeOfDay {
-        let hour = Calendar.current.component(.hour, from: Date())
-        return (5..<18).contains(hour) ? .day : .night
-    }
+//    static var current: TimeOfDay {
+//        let hour = Calendar.current.component(.hour, from: Date())
+//        return (5..<18).contains(hour) ? .day : .night
+//    }
 }
 
 // MARK: - App Theme

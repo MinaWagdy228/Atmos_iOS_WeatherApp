@@ -12,10 +12,10 @@ import SwiftUI
 /// Icon + label sit at the top; the large value (+ optional unit) anchors the bottom.
 struct MetricCardView: View {
 
-    let icon:  String   // SF Symbol name — swap for asset name once icons are ready
-    let label: String   // Uppercase caption e.g. "VISIBILITY"
-    let value: String   // Numeric string e.g. "10"
-    let unit:  String   // Unit string e.g. "km", "%" — pass "" to hide
+    let icon:  String
+    let label: String
+    let value: String
+    let unit:  String
     @Environment(\.appTheme) private var theme
     
     var body: some View {
@@ -26,7 +26,7 @@ struct MetricCardView: View {
                 .font(AppFonts.metricLabel)
                 .foregroundStyle(theme.secondaryText)
                 .lineLimit(1)
-                .minimumScaleFactor(0.85) // we put this when we need to
+                .minimumScaleFactor(0.85)
 
             Spacer(minLength: 14)
 

@@ -39,7 +39,10 @@ struct WeatherHeaderView: View {
                 .padding(.top, 2)
 
             // Condition Icon
-            Image(systemName: viewModel.systemIconName(for: viewModel.weather.conditionCode))
+            Image(
+                systemName: WeatherIconMapper
+                    .systemIconName(for: viewModel.weather.conditionCode)
+            )
                 .symbolRenderingMode(.multicolor)
                 .font(.system(size: 72))
                 .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 3)

@@ -32,8 +32,8 @@ struct ForecastSectionView: View {
                 } label: {
                     ForecastRowView(
                         day: day,
-                        iconName: viewModel.systemIconName(
-                            for: day.conditionCode)
+                        iconName: WeatherIconMapper
+                            .systemIconName(for: day.conditionCode)
                     )
                 }
                 .buttonStyle(.plain)

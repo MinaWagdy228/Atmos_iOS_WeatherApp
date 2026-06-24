@@ -57,6 +57,7 @@ enum WeatherMapper {
             humidity: dto.current.humidity,
             feelsLike: dto.current.feelslikeC,
             pressure: dto.current.pressureMb,
+            isDay: dto.current.isDay,
             forecast: forecastModels
         )
     }
