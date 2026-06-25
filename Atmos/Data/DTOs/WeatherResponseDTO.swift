@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct WeatherResponseDTO: Decodable {
+struct WeatherResponseDTO: Decodable { // in iOS we call it Model not DTO
     let location: LocationDTO
     let current: CurrentDTO
     let forecast: ForecastDTO

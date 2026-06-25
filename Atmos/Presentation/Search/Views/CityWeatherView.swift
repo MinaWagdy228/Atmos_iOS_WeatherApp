@@ -5,15 +5,13 @@ struct CityWeatherView: View {
     let weather: WeatherModel
     let onDismiss: () -> Void
     @Environment(\.appTheme) private var theme
-    @State private var viewModel: CurrentWeatherViewModel
+    @State private var viewModel = DIContainer.shared
+        .makeCurrentWeatherViewModel()
+    @State private var showRemoveAlert = false
 
     init(weather: WeatherModel, onDismiss: @escaping () -> Void) {
         self.weather = weather
         self.onDismiss = onDismiss
-        
-        let vm = DIContainer.shared.makeCurrentWeatherViewModel()
-        vm.weather = weather
-        _viewModel = State(initialValue: vm)
     }
 
     var body: some View {
@@ -40,16 +38,37 @@ struct CityWeatherView: View {
 
                         // ── The Dynamic Save Button ──────────────────────────
                         Button {
-                            viewModel.toggleSaveStatus()
+                            viewModel.handleSaveButtonTapped()
                         } label: {
-                            Image(systemName: viewModel.isSaved ? "checkmark.circle.fill" : "plus")
-                                // A subtle color change provides excellent UX feedback
-                                .foregroundStyle(viewModel.isSaved ? Color.green : theme.primaryText)
-                                .font(.system(size: 20, weight: .medium))
-                                // Adds a smooth transition when the icon swaps
-                                .contentTransition(.symbolEffect(.replace))
+                            Image(
+                                systemName: viewModel.isSaved
+                                    ? "checkmark.circle.fill" : "plus"
+                            )
+                            // A subtle color change provides excellent UX feedback
+                            .foregroundStyle(
+                                viewModel.isSaved
+                                    ? Color.green : theme.primaryText
+                            )
+                            .font(.system(size: 20, weight: .medium))
+                            // Adds a smooth transition when the icon swaps
+                            .contentTransition(.symbolEffect(.replace))
                         }
                         .frame(width: 44, height: 44)
+                        .alert(
+                            "Remove City",
+                            isPresented: $viewModel
+                                .showRemoveConfirmation
+                        ) {
+                            Button("Cancel", role: .cancel) {}
+
+                            Button("Remove", role: .destructive) {
+                                viewModel.confirmCityRemoval()
+                            }
+                        } message: {
+                            Text(
+                                "Are you sure you want to remove \(viewModel.cityName) from your saved cities?"
+                            )
+                        }
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
@@ -65,6 +84,8 @@ struct CityWeatherView: View {
             .task {
                 await viewModel.loadWeather(for: viewModel.cityName)
             }
+        }.task {
+            viewModel.weather = self.weather
         }
     }
 }

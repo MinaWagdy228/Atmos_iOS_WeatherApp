@@ -19,7 +19,7 @@ final class CurrentWeatherViewModel {
     // MARK: - State
     var weather: WeatherModel = .dummy
     var timeOfDay: TimeOfDay = .day
-//    var timeOfDay: TimeOfDay = .current
+    //    var timeOfDay: TimeOfDay = .current
     var isMenuOpen: Bool = false
     var isSearching: Bool = false
 
@@ -27,9 +27,9 @@ final class CurrentWeatherViewModel {
     var errorMessage: String? = nil
 
     var isSaved: Bool = false
+    var showRemoveConfirmation: Bool = false
     let defaultLocation: String = "Alexandria"
     var savedCities: [SavedCityModel] = []
-
 
     // MARK: - Init
     init(
@@ -60,7 +60,6 @@ final class CurrentWeatherViewModel {
 
         isLoading = false
     }
-
     // MARK: - Local Data Intentions
     func checkIfSaved() {
         Task {
@@ -72,31 +71,45 @@ final class CurrentWeatherViewModel {
             }
         }
     }
-
-    func toggleSaveStatus() {
+    func handleSaveButtonTapped() {
+        if isSaved {
+            // Don't delete yet. Tell the UI to ask for confirmation.
+            showRemoveConfirmation = true
+        } else {
+            // Safe to save immediately
+            executeSaveCity()
+        }
+    }
+    private func executeSaveCity() {
         Task {
             do {
-                if isSaved {
-                    try await managedSavedCitiesUseCase.deleteCity(name: weather.cityName)
-                    self.isSaved = false
-                } else {
-                    try await managedSavedCitiesUseCase.saveCity(
-                        name: weather.cityName, temperature: weather.temperature
-                    )
-                    self.isSaved = true
-                }
+                try await managedSavedCitiesUseCase.saveCity(
+                    name: weather.cityName, temperature: weather.temperature)
+                self.isSaved = true
+                self.loadSavedCities()
             } catch {
-                print("Failed to toggle save status: \(error)")
+                print("Failed to save city: \(error)")
             }
         }
-        self.loadSavedCities()
+    }
+    func confirmCityRemoval() {
+        Task {
+            do {
+                try await managedSavedCitiesUseCase.deleteCity(
+                    name: weather.cityName)
+                self.isSaved = false
+                self.loadSavedCities()
+            } catch {
+                print("Failed to delete city: \(error)")
+            }
+        }
     }
     // MARK: - Drawer & Saved Cities State
-
     func loadSavedCities() {
         Task {
             do {
-                self.savedCities = try await managedSavedCitiesUseCase.getSavedCities()
+                self.savedCities =
+                    try await managedSavedCitiesUseCase.getSavedCities()
             } catch {
                 print("Failed to load saved cities: \(error)")
             }
