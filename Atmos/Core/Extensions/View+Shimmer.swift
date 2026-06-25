@@ -14,7 +14,6 @@ struct ShimmerEffect: ViewModifier {
         content
             .overlay(
                 LinearGradient(
-                    // 2. Use the dynamic color instead of hardcoded .white
                     gradient: Gradient(colors: [.clear, highlightColor, .clear]
                     ),
                     startPoint: .leading,
