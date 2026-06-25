@@ -15,7 +15,6 @@ struct CityWeatherView: View {
     }
 
     var body: some View {
-        @Bindable var bindableViewModel = viewModel
         NavigationStack {
             ZStack {
                 theme.backgroundGradient.ignoresSafeArea()
@@ -57,7 +56,7 @@ struct CityWeatherView: View {
                         .frame(width: 44, height: 44)
                         .alert(
                             "Remove City",
-                            isPresented: $bindableViewModel
+                            isPresented: $viewModel
                                 .showRemoveConfirmation
                         ) {
                             Button("Cancel", role: .cancel) {}
